@@ -1,6 +1,7 @@
-from flask import Flask, url_for, render_template, request, redirect, session, flash, jsonify
+from flask import Flask, url_for, render_template, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
+import os
 import stripe
 from flask_ckeditor import CKEditor
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -13,8 +14,8 @@ app = Flask(__name__)
 ckeditor = CKEditor(app)
 app.config['CKEDITOR_PKG_TYPE'] = 'standard'
 
-SECRET_KEY = 'sk_test_51OeIHBLRdOm6Mv2pFRLgFfGYOqVeCrgHILRVokXZZda4HmeAqfUvdBIF8Ux34fcTockhK54BHdN70QmA1NkTU68B00ESwtjnB8'
-PUBLISHABLE_KEY = 'pk_test_51OeIHBLRdOm6Mv2p6AfEAaY3aaEStnQnaJHXQssYHOaDxgthpgESkHSaRMI2PaoSM8uv9fNTXs8MdEpmFqvJWWIa00BJmahsd3'
+SECRET_KEY = os.getenv('SECRET_KEY')
+PUBLISHABLE_KEY = os.getenv('PUBLISHABLE_KEY')
 
 stripe_keys = {'secret_key': SECRET_KEY,
                'published_key': PUBLISHABLE_KEY,
@@ -24,12 +25,12 @@ stripe.api_key = stripe_keys["secret_key"]
 global cart_size
 cart_size = 0
 
-app.config['RECAPTCHA_PUBLIC_KEY'] = '6LfpP1kpAAAAAHOzELguW7msMWfI4tIQQ0i0Ego-'
-app.config['RECAPTCHA_PRIVATE_KEY'] = '6LfpP1kpAAAAADHMK9pcfoSv-aXqeaP9VCWf6ETl'
+app.config['RECAPTCHA_PUBLIC_KEY'] = os.getenv('RECAPTCHA_PUBLIC_KEY')
+app.config['RECAPTCHA_PRIVATE_KEY'] = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
 # configure the SQLite database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
-app.secret_key = 'tO$&!|0wkamvVia0?n$NqIRVWOG'
+app.secret_key = os.getenv('FLASK_KEY')
 
 #database
 db = SQLAlchemy(app)
@@ -348,4 +349,4 @@ def logout():
         return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
