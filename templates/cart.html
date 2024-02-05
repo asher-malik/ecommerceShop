@@ -1,0 +1,40 @@
+{% include 'header.html' %}
+
+<div class="container-fluid"> <!-- Add this div -->
+    <div class="col-md-8 col-lg-6 offset-md-2 offset-lg-3 order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-dark mt-5">Your cart</span>
+            <span class="badge bg-dark rounded-pill mt-5">{{ cart_size }}</span>
+        </h4>
+        <ul class="list-group mb-3">
+            {% for item in cart %}
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                    <h6 class="my-0">{{ item.product_name }}</h6>
+                    <a class="text-body-dark" href="{{ url_for('remove_from_cart', name=item.product_name) }}"><small>Remove</small></a>
+                </div>
+                <span class="text-body-dark">{{ item.price }}</span>
+            </li>
+            {% endfor %}
+
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Total (euro)</span>
+                <strong>{{ total_price }}</strong>
+            </li>
+        </ul>
+        <form action="{{ url_for('payment') }}" method="POST">
+            <script
+                src='https://checkout.stripe.com/checkout.js'
+                class='stripe-button'
+                data-key={{public_key}}
+                data-amount={{total_in_cents}}
+                data-name='Buy Now'
+                data-description='Buy'
+                data-locale='auto'
+                data-zip-code='true'
+                data-shipping-address-collection='required'>
+            </script>
+        </form>
+    </div>
+    {% include 'footer.html' %}
+</div> <!-- Close the div -->

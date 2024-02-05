@@ -1,0 +1,14 @@
+{% include 'header.html' %}
+
+{% from 'bootstrap5/form.html' import render_form %}
+
+{{ ckeditor.load() }}
+
+<div class="container mt-5 mb-5">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {{ render_form(form) }}
+    </form>
+</div>
+
+{% include 'footer.html' %}

@@ -1,0 +1,22 @@
+{% include 'header.html' %}
+
+<table class="table mt-3">
+  <thead>
+    <tr>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in purchased_item %}
+    <tr>
+      <td>{{item.product_name}}</td>
+      <td>{{item.price}}</td>
+      <td>{{item.date}}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% include 'footer.html'%}
